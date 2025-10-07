@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">InvestigacionDSM2</string>
+    <string name="artista">Artista</string>
+    <string name="g_nero">Género</string>
+    <string name="lbum">Álbum</string>
+    <string name="album">Album</string>
+    <string name="genero">Género</string>
+    <string name="buscar">Buscar...</string>
 </resources>

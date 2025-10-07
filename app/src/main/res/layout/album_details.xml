@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tv_album_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Título del Álbum"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tv_album_artist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Artista:"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_album_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Año:"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_album_genre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Género:"
+        android:layout_marginBottom="4dp" />
+</LinearLayout>
