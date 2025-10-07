@@ -9,7 +9,7 @@
         android:id="@+id/tv_album_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Título del Álbum"
+        android:text="Título del Álbum (Ejemplo)"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -18,20 +18,21 @@
         android:id="@+id/tv_album_artist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Artista:"
+        android:text="Artista: Nombre del Artista (Ejemplo)"
         android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tv_album_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Año:"
+        android:text="Año: 2024 (Ejemplo)"
         android:layout_marginBottom="4dp" />
 
     <TextView
         android:id="@+id/tv_album_genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Género:"
+        android:text="Género: Pop (Ejemplo)"
         android:layout_marginBottom="4dp" />
+
 </LinearLayout>
