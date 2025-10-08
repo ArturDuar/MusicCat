@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="20dp">
 
     <TextView
-        android:id="@+id/tv_detail_title"
+        android:id="@+id/tv_song_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Título"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="12dp"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        tools:text="Título de la Canción" />
+
+    <!-- ✅ VISTA AÑADIDA PARA EL NOMBRE DEL ARTISTA -->
+    <TextView
+        android:id="@+id/tv_artist_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        tools:text="Artista: Nombre del Artista" />
+
+    <!-- ✅ VISTA AÑADIDA PARA EL TÍTULO DEL ÁLBUM -->
+    <TextView
+        android:id="@+id/tv_album_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        tools:text="Álbum: Título del Álbum" />
 
     <TextView
-        android:id="@+id/tv_detail_artist"
+        android:id="@+id/tv_song_genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Artista: "
-        android:layout_marginBottom="4dp" />
+        android:layout_marginBottom="4dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        tools:text="Género: Pop" />
 
     <TextView
-        android:id="@+id/tv_detail_album"
+        android:id="@+id/tv_song_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Álbum: "
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/tv_detail_genre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Género: "
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/tv_detail_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Duración: " />
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        tools:text="Duración: 03:45" />
 
 </LinearLayout>
