@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">InvestigacionDSM2</string>
+
+    <!-- Strings existentes -->
     <string name="artista">Artista</string>
     <string name="g_nero">Género</string>
     <string name="lbum">Álbum</string>
@@ -7,4 +9,10 @@
     <string name="genero">Género</string>
     <string name="buscar">Buscar...</string>
     <string name="pais">Pais</string>
+
+    <!-- Cadenas agregadas -->
+    <string name="buscar_cancion">Buscar canción</string>
+    <string name="detalles_cancion">Detalles de la canción</string>
+    <string name="titulo">Título</string>
+    <string name="duracion">Duración</string>
 </resources>
