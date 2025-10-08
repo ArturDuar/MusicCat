@@ -1,7 +1,11 @@
 package edu.udb.investigaciondsm2
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +19,6 @@ import edu.udb.investigaciondsm2.model.SongDetailsData
 
 class SongsActivity : AppCompatActivity() {
 
-    // 1. Declaraciones
     private lateinit var binding: ActivitySongsBinding
     private lateinit var dbHelper: DatabaseHelper
     private lateinit var songAdapter: SongAdapter
@@ -23,107 +26,92 @@ class SongsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializar View Binding
         binding = ActivitySongsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configuración de la ActionBar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Canciones"
 
-        // Inicializar Database Helper
         dbHelper = DatabaseHelper(this)
 
-        // Inicializar componentes de la interfaz
         setupSpinners()
         setupRecyclerView()
 
-        // e: ...:44:17 Unresolved reference 'btnBuscar'. -> CORREGIDO
+        loadSongs()
+
+        // Configuración de la búsqueda
         binding.btnBuscar.setOnClickListener {
             val searchTerm = binding.searchBar.text.toString()
-            val artistFilter = binding.spinnerArtist.selectedItem.toString().takeIf { it != "Artista" } ?: ""
-            val albumFilter = binding.spinnerAlbum.selectedItem.toString().takeIf { it != "Álbum" } ?: ""
+            val artistFilter = binding.spinnerArtist.selectedItem.toString().takeIf { it != "Todos" } ?: ""
+            val albumFilter = binding.spinnerAlbum.selectedItem.toString().takeIf { it != "Todos" } ?: ""
             loadSongs(searchTerm, artistFilter, albumFilter)
         }
-
-        // Carga inicial
-        loadSongs()
     }
 
     private fun setupSpinners() {
-        // e: ...:51:32 Unresolved reference 'getDistinctArtistNames'. -> CORREGIDO CON LA FUNCIÓN A IMPLEMENTAR
-        val artists = dbHelper.getDistinctArtistNames().toMutableList()
-        artists.add(0, "Artista") // Opción predeterminada
-
-        // e: ...:52:31 Unresolved reference 'getDistinctAlbumTitles'. -> CORREGIDO CON LA FUNCIÓN A IMPLEMENTAR
-        val albums = dbHelper.getDistinctAlbumTitles().toMutableList()
-        albums.add(0, "Álbum") // Opción predeterminada
-
-        // Adapter para Artistas
-        val artistAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            artists
-        )
-        artistAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val allArtists = dbHelper.getDistinctArtistNames().toMutableList()
+        allArtists.add(0, "Todos")
+        val artistAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, allArtists)
         binding.spinnerArtist.adapter = artistAdapter
 
-        // Adapter para Álbumes
-        val albumAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            albums
-        )
-        albumAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val allAlbums = dbHelper.getDistinctAlbumTitles().toMutableList()
+        allAlbums.add(0, "Todos")
+        val albumAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, allAlbums)
         binding.spinnerAlbum.adapter = albumAdapter
     }
 
     private fun setupRecyclerView() {
-        // Inicializa el adaptador con una lista vacía y un listener
         songAdapter = SongAdapter(emptyList()) { song ->
             showSongDetailsModal(song)
         }
-
-        // e: ...:78:17 Unresolved reference 'rvSongs'. -> CORREGIDO
         binding.rvSongs.layoutManager = LinearLayoutManager(this)
-        // e: ...:79:17 Unresolved reference 'rvSongs'. -> CORREGIDO
         binding.rvSongs.adapter = songAdapter
     }
 
     private fun loadSongs(searchTerm: String = "", artistNameFilter: String = "", albumTitleFilter: String = "") {
-        // e: ...:97:41 Unresolved reference 'getAllSongsWithDetails'. -> CORREGIDO CON LA FUNCIÓN A IMPLEMENTAR
-        // Obtener la lista de canciones con detalles del DB Helper
-        val songsWithDetails: List<SongWithDetails> = dbHelper.getAllSongsWithDetails(searchTerm, artistNameFilter, albumTitleFilter)
-
-        // Actualizar el RecyclerView
+        val songsWithDetails = dbHelper.getAllSongsWithDetails(searchTerm, artistNameFilter, albumTitleFilter)
         songAdapter.updateList(songsWithDetails)
     }
 
-    // Modal de Detalles
-    private fun showSongDetailsModal(song: Cancion) {
-        // e: ...:106:32 Unresolved reference 'getSongDetails'. -> CORREGIDO CON LA FUNCIÓN A IMPLEMENTAR
-        // Obtenemos los detalles adicionales de la base de datos
-        val details = dbHelper.getSongDetails(song.songId)
+    /**
+     * **NUEVA FUNCIÓN:** Convierte segundos a formato "M:SS".
+     */
+    private fun formatDuration(durationSeconds: Int): String {
+        val minutes = durationSeconds / 60
+        val seconds = durationSeconds % 60
+        return String.format("%d:%02d", minutes, seconds)
+    }
 
-        // Usamos View Binding para el layout de la modal (song_details.xml)
+    private fun showSongDetailsModal(song: Cancion) {
+        val details = dbHelper.getSongDetails(song.songId)
         val dialogBinding = SongDetailsBinding.inflate(layoutInflater)
 
         // Rellenar los datos en el layout de la modal
         dialogBinding.tvDetailTitle.text = song.title
-
-        // Usamos los detalles obtenidos del JOIN
         dialogBinding.tvDetailArtist.text = "Artista: ${details?.artistName ?: "Desconocido"}"
         dialogBinding.tvDetailAlbum.text = "Álbum: ${details?.albumTitle ?: "Desconocido"}"
-
         dialogBinding.tvDetailGenre.text = "Género: ${song.genre}"
 
-        // Formatear duración (asumiendo que duration está en segundos)
-        val minutes = song.duration / 60
-        val seconds = song.duration % 60
-        dialogBinding.tvDetailDuration.text = "Duración: ${String.format("%d:%02d", minutes, seconds)}"
+        // **LÍNEA CORREGIDA (Cerca de la Línea 125):** // Se utiliza la referencia 'tv_detail_duration' y se le asigna un String (resuelve los 3 errores).
+        dialogBinding.tvDetailDuration.text = "Duración: ${formatDuration(song.duration)}"
 
+        val playButton = dialogBinding.btnPlaySong
+        playButton.text = "REPRODUCIR URL"
 
-        // Mostrar el modal
+        playButton.setOnClickListener {
+            val url = song.url
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "No se pudo abrir el enlace: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Toast.makeText(this, "El enlace de reproducción no está disponible.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         AlertDialog.Builder(this)
             .setView(dialogBinding.root)
             .setTitle("Detalles de la Canción")

@@ -45,49 +45,104 @@ class DatabaseHelper(context: Context) :
         private const val KEY_SONG_URL = "url"
     }
 
+    // SQL strings (usamos IF NOT EXISTS para poder ejecutarlas en onOpen() sin romper)
+    private val CREATE_ALBUMS_TABLE_SQL = """
+        CREATE TABLE IF NOT EXISTS $TABLE_ALBUMS (
+          $KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+          $KEY_TITLE TEXT,
+          $KEY_ARTIST_ID INTEGER,
+          $KEY_YEAR INTEGER,
+          $KEY_GENRE TEXT
+        );
+    """.trimIndent()
+
+    private val CREATE_ARTISTS_TABLE_SQL = """
+        CREATE TABLE IF NOT EXISTS $TABLE_ARTISTS (
+          $KEY_ARTIST_TABLE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+          $KEY_ARTIST_NAME TEXT NOT NULL,
+          $KEY_ARTIST_GENRE TEXT,
+          $KEY_ARTIST_COUNTRY TEXT,
+          $KEY_ARTIST_DESCRIPTION TEXT
+        );
+    """.trimIndent()
+
+    private val CREATE_SONGS_TABLE_SQL = """
+        CREATE TABLE IF NOT EXISTS $TABLE_SONGS (
+          $KEY_SONG_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+          $KEY_SONG_TITLE TEXT NOT NULL,
+          $KEY_SONG_ALBUM_ID INTEGER,
+          $KEY_SONG_ARTIST_ID INTEGER,
+          $KEY_SONG_GENRE TEXT,
+          $KEY_SONG_DURATION INTEGER,
+          $KEY_SONG_URL TEXT
+        );
+    """.trimIndent()
+
     override fun onCreate(db: SQLiteDatabase) {
-        // --- Creación de tabla de álbumes ---
-        val CREATE_ALBUMS_TABLE = ("CREATE TABLE $TABLE_ALBUMS("
-                + "$KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "$KEY_TITLE TEXT,"
-                + "$KEY_ARTIST_ID INTEGER,"
-                + "$KEY_YEAR INTEGER,"
-                + "$KEY_GENRE TEXT" + ")")
-        db.execSQL(CREATE_ALBUMS_TABLE)
+        // Creamos tablas (si no existen)
+        db.execSQL(CREATE_ARTISTS_TABLE_SQL)
+        db.execSQL(CREATE_ALBUMS_TABLE_SQL)
+        db.execSQL(CREATE_SONGS_TABLE_SQL)
 
-        // --- Creación de tabla de artistas ---
-        val CREATE_ARTISTS_TABLE = ("CREATE TABLE $TABLE_ARTISTS("
-                + "$KEY_ARTIST_TABLE_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "$KEY_ARTIST_NAME TEXT NOT NULL,"
-                + "$KEY_ARTIST_GENRE TEXT,"
-                + "$KEY_ARTIST_COUNTRY TEXT,"
-                + "$KEY_ARTIST_DESCRIPTION TEXT" + ")")
-        db.execSQL(CREATE_ARTISTS_TABLE)
-
-        // --- Creación de tabla de canciones (NUEVO) ---
-        val CREATE_SONGS_TABLE = ("CREATE TABLE $TABLE_SONGS("
-                + "$KEY_SONG_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "$KEY_SONG_TITLE TEXT NOT NULL,"
-                + "$KEY_SONG_ALBUM_ID INTEGER,"
-                + "$KEY_SONG_ARTIST_ID INTEGER,"
-                + "$KEY_SONG_GENRE TEXT,"
-                + "$KEY_SONG_DURATION INTEGER,"
-                + "$KEY_SONG_URL TEXT" + ")")
-        db.execSQL(CREATE_SONGS_TABLE)
-
-        // --- Datos iniciales ---
-        seedArtistData(db)
-        seedAlbumData(db)
-        seedCancionData(db)
+        // Seeds: sólo si las tablas están vacías
+        if (isTableEmpty(db, TABLE_ARTISTS)) seedArtistData(db)
+        if (isTableEmpty(db, TABLE_ALBUMS)) seedAlbumData(db)
+        if (isTableEmpty(db, TABLE_SONGS)) seedCancionData(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Drop older tables if existed
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_ALBUMS")
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_ARTISTS")
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_SONGS")
-        // Create tables again
-        onCreate(db)
+        // Evitamos eliminar datos automáticamente — en su lugar, aseguramos que las tablas nuevas existan.
+        // Si necesitas limpieza/desarrollo rápido, puedes descomentar los DROPs.
+        // db.execSQL("DROP TABLE IF EXISTS $TABLE_SONGS")
+        // db.execSQL("DROP TABLE IF EXISTS $TABLE_ALBUMS")
+        // db.execSQL("DROP TABLE IF EXISTS $TABLE_ARTISTS")
+        // onCreate(db)
+
+        // Si estamos actualizando desde una versión antigua que no tenía songs, crearla:
+        db.execSQL(CREATE_ARTISTS_TABLE_SQL)
+        db.execSQL(CREATE_ALBUMS_TABLE_SQL)
+        db.execSQL(CREATE_SONGS_TABLE_SQL)
+
+        // Sembrar datos sólo si tablas vacías (evita duplicados)
+        if (isTableEmpty(db, TABLE_ARTISTS)) seedArtistData(db)
+        if (isTableEmpty(db, TABLE_ALBUMS)) seedAlbumData(db)
+        if (isTableEmpty(db, TABLE_SONGS)) seedCancionData(db)
+    }
+
+    // onOpen se ejecuta cada vez que se abre la DB; aquí garantizamos que la tabla songs exista
+    override fun onOpen(db: SQLiteDatabase) {
+        super.onOpen(db)
+        // Crea tablas si faltan (IF NOT EXISTS evita excepción)
+        db.execSQL(CREATE_ARTISTS_TABLE_SQL)
+        db.execSQL(CREATE_ALBUMS_TABLE_SQL)
+        db.execSQL(CREATE_SONGS_TABLE_SQL)
+
+        // Si songs está vacía, sembramos datos (no duplicaremos si ya hay)
+        if (isTableEmpty(db, TABLE_SONGS)) {
+            seedCancionData(db)
+        }
+        // Opcional: también sembrar artistas/álbumes si faltan
+        if (isTableEmpty(db, TABLE_ARTISTS)) {
+            seedArtistData(db)
+        }
+        if (isTableEmpty(db, TABLE_ALBUMS)) {
+            seedAlbumData(db)
+        }
+    }
+
+    // Helper: revisa si una tabla está vacía
+    private fun isTableEmpty(db: SQLiteDatabase, tableName: String): Boolean {
+        return try {
+            val cursor = db.rawQuery("SELECT COUNT(1) FROM $tableName", null)
+            cursor.use {
+                if (it.moveToFirst()) {
+                    it.getInt(0) == 0
+                } else true
+            }
+        } catch (e: Exception) {
+            // Si la tabla no existe o hay error, la consideramos "vacía" para provocar creación/seed
+            true
+        }
     }
 
     // ===================================================================
@@ -120,7 +175,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getAllAlbums(searchTerm: String = "", artistFilter: String = "", genreFilter: String = ""): List<Album> {
         val albumList = ArrayList<Album>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
         val selectColumns = "T1.$KEY_ID, T1.$KEY_TITLE, T1.$KEY_ARTIST_ID, T1.$KEY_YEAR, T1.$KEY_GENRE, T2.$KEY_ARTIST_NAME AS artist_name"
         var query = "SELECT $selectColumns FROM $TABLE_ALBUMS AS T1 INNER JOIN $TABLE_ARTISTS AS T2 ON T1.$KEY_ARTIST_ID = T2.$KEY_ARTIST_TABLE_ID"
@@ -169,13 +224,11 @@ class DatabaseHelper(context: Context) :
 
     /**
      * Gets a list of distinct values from a column (e.g., Genres or Artist Names).
-     * Versátil: acepta nombres de columna que tus Activities puedan enviar como "artist_id", "genre", etc.
      */
     fun getDistinctValues(columnName: String): List<String> {
         val distinctList = mutableListOf<String>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
-        // Normalizamos para cubrir variantes
         val normalized = columnName.trim().lowercase()
 
         val query: String? = when (normalized) {
@@ -233,7 +286,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getAllArtists(searchTerm: String = "", genreFilter: String = "", countryFilter: String = ""): List<Artista> {
         val artistList = ArrayList<Artista>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
         var query = "SELECT * FROM $TABLE_ARTISTS"
         val selectionArgs = mutableListOf<String>()
@@ -279,11 +332,10 @@ class DatabaseHelper(context: Context) :
 
     /**
      * Gets a list of distinct values from a column for Artists (e.g., Genres or Countries)
-     * Acepta "genre" / "country" o las constantes KEY_ARTIST_GENRE / KEY_ARTIST_COUNTRY.
      */
     fun getDistinctArtistValues(columnName: String): List<String> {
         val distinctList = mutableListOf<String>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
         val normalized = columnName.trim().lowercase()
         val column = when (normalized) {
@@ -325,7 +377,7 @@ class DatabaseHelper(context: Context) :
     // Seed data for songs (using existing Album/Artist IDs)
     private fun seedCancionData(db: SQLiteDatabase) {
         addCancion(Cancion(title = "Me Enamoré", albumId = 1, artistId = 1, genre = "Latin Pop", duration = 196, url = "url_meenamore"), db)
-        addCancion(Cancion(title = "Chantaje", albumId = 1, artistId = 1, genre = "Reggaeton", duration = 196, url = "url_chantaje"), db)
+        addCancion(Cancion(title = "Chantaje", albumId = 1, artistId = 1, genre = "Reggaeton", duration = 196, url = "https://youtu.be/6Mgqbai3fKo?list=RD6Mgqbai3fKo"), db)
         addCancion(Cancion(title = "Don't Start Now", albumId = 2, artistId = 2, genre = "Pop", duration = 183, url = "url_dontstartnow"), db)
         addCancion(Cancion(title = "Physical", albumId = 2, artistId = 2, genre = "Pop", duration = 205, url = "url_physical"), db)
         addCancion(Cancion(title = "Thriller", albumId = 3, artistId = 3, genre = "Pop/R&B", duration = 357, url = "url_thriller"), db)
@@ -340,7 +392,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getAllSongs(searchTerm: String = "", albumFilter: String = "", artistFilter: String = ""): List<Cancion> {
         val songList = ArrayList<Cancion>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
         val selectColumns = "T1.*"
         var query = "SELECT $selectColumns FROM $TABLE_SONGS AS T1 " +
@@ -396,7 +448,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getDistinctSongValues(columnName: String): List<String> {
         val distinctList = mutableListOf<String>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
         val normalized = columnName.trim().lowercase()
         val targetQuery: String? = when (normalized) {
@@ -428,7 +480,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getDistinctArtistNames(): List<String> {
         val list = mutableListOf<String>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
         val query = "SELECT DISTINCT $KEY_ARTIST_NAME FROM $TABLE_ARTISTS WHERE $KEY_ARTIST_NAME IS NOT NULL AND $KEY_ARTIST_NAME != '' ORDER BY $KEY_ARTIST_NAME ASC"
         val cursor = db.rawQuery(query, null)
         cursor.use {
@@ -446,7 +498,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getDistinctAlbumTitles(): List<String> {
         val list = mutableListOf<String>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
         val query = "SELECT DISTINCT $KEY_TITLE FROM $TABLE_ALBUMS WHERE $KEY_TITLE IS NOT NULL AND $KEY_TITLE != '' ORDER BY $KEY_TITLE ASC"
         val cursor = db.rawQuery(query, null)
         cursor.use {
@@ -465,7 +517,7 @@ class DatabaseHelper(context: Context) :
      */
     fun getAllSongsWithDetails(searchTerm: String = "", artistFilter: String = "", albumFilter: String = ""): List<SongWithDetails> {
         val list = mutableListOf<SongWithDetails>()
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
 
         val selectCols = "T1.$KEY_SONG_ID, T1.$KEY_SONG_TITLE, T1.$KEY_SONG_ALBUM_ID, T1.$KEY_SONG_ARTIST_ID, T1.$KEY_SONG_GENRE, T1.$KEY_SONG_DURATION, T1.$KEY_SONG_URL, T2.$KEY_ARTIST_NAME AS artist_name, T3.$KEY_TITLE AS album_title"
         var query = "SELECT $selectCols FROM $TABLE_SONGS AS T1 " +
@@ -527,7 +579,7 @@ class DatabaseHelper(context: Context) :
      * Retorna SongDetailsData? (null si no existe la canción).
      */
     fun getSongDetails(songId: Int): SongDetailsData? {
-        val db = this.readabledatabaseSafe()
+        val db = this.readableDatabase
         val query = """
             SELECT T2.$KEY_ARTIST_NAME AS artist_name, T3.$KEY_TITLE AS album_title
             FROM $TABLE_SONGS AS T1
@@ -548,13 +600,5 @@ class DatabaseHelper(context: Context) :
             }
         }
         return null
-    }
-
-    /**
-     * Pequeña función wrapper para obtener readableDatabase y evitar warnings
-     * (puedes eliminarla si prefieres usar directamente this.readableDatabase).
-     */
-    private fun readabledatabaseSafe(): SQLiteDatabase {
-        return this.readableDatabase
     }
 }

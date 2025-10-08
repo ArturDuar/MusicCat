@@ -39,6 +39,13 @@
         android:id="@+id/tv_detail_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Duración: " />
+        android:text="Duración: 0:00"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btn_play_song"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REPRODUCIR EN YOUTUBE" />
 
 </LinearLayout>
