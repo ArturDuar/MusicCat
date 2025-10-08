@@ -376,15 +376,15 @@ class DatabaseHelper(context: Context) :
 
     // Seed data for songs (using existing Album/Artist IDs)
     private fun seedCancionData(db: SQLiteDatabase) {
-        addCancion(Cancion(title = "Me Enamoré", albumId = 1, artistId = 1, genre = "Latin Pop", duration = 196, url = "url_meenamore"), db)
+        addCancion(Cancion(title = "Me Enamoré", albumId = 1, artistId = 1, genre = "Latin Pop", duration = 196, url = "https://youtu.be/sPTn0QEhxds?list=RDsPTn0QEhxds"), db)
         addCancion(Cancion(title = "Chantaje", albumId = 1, artistId = 1, genre = "Reggaeton", duration = 196, url = "https://youtu.be/6Mgqbai3fKo?list=RD6Mgqbai3fKo"), db)
-        addCancion(Cancion(title = "Don't Start Now", albumId = 2, artistId = 2, genre = "Pop", duration = 183, url = "url_dontstartnow"), db)
-        addCancion(Cancion(title = "Physical", albumId = 2, artistId = 2, genre = "Pop", duration = 205, url = "url_physical"), db)
-        addCancion(Cancion(title = "Thriller", albumId = 3, artistId = 3, genre = "Pop/R&B", duration = 357, url = "url_thriller"), db)
-        addCancion(Cancion(title = "Billie Jean", albumId = 3, artistId = 3, genre = "Pop/R&B", duration = 294, url = "url_billiejean"), db)
-        addCancion(Cancion(title = "Moscow Mule", albumId = 4, artistId = 4, genre = "Reggaeton", duration = 243, url = "url_moscowmule"), db)
-        addCancion(Cancion(title = "Titi Me Preguntó", albumId = 4, artistId = 4, genre = "Reggaeton", duration = 243, url = "url_titimepregunto"), db)
-        addCancion(Cancion(title = "Formation", albumId = 5, artistId = 5, genre = "R&B", duration = 217, url = "url_formation"), db)
+        addCancion(Cancion(title = "Don't Start Now", albumId = 2, artistId = 2, genre = "Pop", duration = 183, url = "https://youtu.be/oygrmJFKYZY?list=RDoygrmJFKYZY"), db)
+        addCancion(Cancion(title = "Physical", albumId = 2, artistId = 2, genre = "Pop", duration = 205, url = "https://youtu.be/9HDEHj2yzew?list=RD9HDEHj2yzew"), db)
+        addCancion(Cancion(title = "Thriller", albumId = 3, artistId = 3, genre = "Pop/R&B", duration = 357, url = "https://youtu.be/4V90AmXnguw?list=RD4V90AmXnguw"), db)
+        addCancion(Cancion(title = "Billie Jean", albumId = 3, artistId = 3, genre = "Pop/R&B", duration = 294, url = "https://youtu.be/Zi_XLOBDo_Y?list=RDZi_XLOBDo_Y"), db)
+        addCancion(Cancion(title = "Moscow Mule", albumId = 4, artistId = 4, genre = "Reggaeton", duration = 243, url = "https://youtu.be/p38WgakuYDo?list=RDp38WgakuYDo"), db)
+        addCancion(Cancion(title = "Titi Me Preguntó", albumId = 4, artistId = 4, genre = "Reggaeton", duration = 243, url = "https://youtu.be/Cr8K88UcO0s?list=RDCr8K88UcO0s"), db)
+        addCancion(Cancion(title = "Formation", albumId = 5, artistId = 5, genre = "R&B", duration = 217, url = "https://youtu.be/WDZJPJV__bQ?list=RDWDZJPJV__bQ"), db)
     }
 
     /**
