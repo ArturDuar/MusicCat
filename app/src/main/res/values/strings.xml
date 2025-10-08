@@ -1,10 +1,19 @@
 <resources>
     <string name="app_name">InvestigacionDSM2</string>
+
+    <!-- Labels básicos -->
     <string name="artista">Artista</string>
-    <string name="g_nero">Género</string>
-    <string name="lbum">Álbum</string>
-    <string name="album">Album</string>
+    <string name="album">Álbum</string>
     <string name="genero">Género</string>
+    <string name="pais">País</string>
+
+    <!-- Búsqueda -->
     <string name="buscar">Buscar...</string>
-    <string name="pais">Pais</string>
+    <string name="buscar_cancion">Buscar canción</string>
+
+    <!-- Detalles / UI -->
+    <string name="detalles_cancion">Detalles de la canción</string>
+    <string name="titulo">Título</string>
+    <string name="duracion">Duración</string>
 </resources>
+

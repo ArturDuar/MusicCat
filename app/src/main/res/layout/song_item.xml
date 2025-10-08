@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:strokeColor="?attr/colorOutline"
-    app:strokeWidth="1dp">
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +14,6 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Título de la canción -->
         <TextView
             android:id="@+id/tv_song_title"
             android:layout_width="wrap_content"
@@ -24,7 +22,6 @@
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             android:textStyle="bold" />
 
-        <!-- Artista y Álbum -->
         <TextView
             android:id="@+id/tv_song_artist_album"
             android:layout_width="wrap_content"
@@ -33,7 +30,6 @@
             android:textStyle="bold"
             android:layout_marginTop="2dp" />
 
-        <!-- Género y duración -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,4 +55,4 @@
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>
