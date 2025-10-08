@@ -8,8 +8,9 @@
     android:layout_margin="16dp"
     android:fitsSystemWindows="true"
     android:padding="16dp"
-    tools:context=".AlbumsActivity">
+    tools:context=".SongsActivity">
 
+    <!-- 🔍 Barra de búsqueda -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_input_layout"
         android:layout_width="0dp"
@@ -29,6 +30,7 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Filtros -->
     <LinearLayout
         android:id="@+id/filter_row"
         android:layout_width="0dp"
@@ -36,16 +38,15 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:weightSum="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_input_layout">
 
+        <!-- Filtro de Artista -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -62,10 +63,10 @@
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
+        <!-- Filtro de Género -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:layout_marginBottom="12dp">
 
@@ -83,11 +84,12 @@
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
+        <!-- Filtro de Álbum -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,13 +105,14 @@
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
+        <!-- Botón de Búsqueda -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/btn_buscar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/buscar"
@@ -118,5 +121,17 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <!-- RecyclerView para las canciones -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_songs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/filter_row"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/song_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
