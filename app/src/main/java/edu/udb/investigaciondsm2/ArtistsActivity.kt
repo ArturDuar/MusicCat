@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.udb.investigaciondsm2.adapter.ArtistaAdapter
 import edu.udb.investigaciondsm2.data.DatabaseHelper
-// RUTAS DE BINDING CORRECTAS: PAQUETE_BASE.databinding.NOMBRE_XML_CAMELCASE
 import edu.udb.investigaciondsm2.databinding.ActivityArtistsBinding
 import edu.udb.investigaciondsm2.model.Artista
 import edu.udb.investigaciondsm2.databinding.ArtistDetailsBinding

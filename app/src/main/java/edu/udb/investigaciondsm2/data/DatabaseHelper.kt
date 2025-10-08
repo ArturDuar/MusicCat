@@ -19,7 +19,7 @@ class DatabaseHelper(context: Context) :
         private const val TABLE_ALBUMS = "albums"
         private const val KEY_ID = "album_id"
         private const val KEY_TITLE = "title"
-        private const val KEY_ARTIST_ID = "artist_id" // Linking to an Artist table later
+        private const val KEY_ARTIST_ID = "artist_id"
         private const val KEY_YEAR = "year"
         private const val KEY_GENRE = "genre"
 
