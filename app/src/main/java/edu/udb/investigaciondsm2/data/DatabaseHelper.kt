@@ -167,6 +167,27 @@ class DatabaseHelper(context: Context) :
         addAlbum(Album(title = "Thriller", artistId = 3, year = 1982, genre = "Pop/R&B", artistName = "Michael Jackson"), db)
         addAlbum(Album(title = "Un Verano Sin Ti", artistId = 4, year = 2022, genre = "Reggaeton", artistName = "Bad Bunny"), db)
         addAlbum(Album(title = "Lemonade", artistId = 5, year = 2016, genre = "Pop/R&B", artistName = "Beyoncé"), db)
+        addAlbum(Album(title = "25", artistId = 6, year = 2015, genre = "Pop/Soul", artistName = "Adele"), db)
+        addAlbum(Album(title = "÷ (Divide)", artistId = 7, year = 2017, genre = "Pop", artistName = "Ed Sheeran"), db)
+        addAlbum(Album(title = "1989", artistId = 8, year = 2014, genre = "Pop", artistName = "Taylor Swift"), db)
+        addAlbum(Album(title = "24K Magic", artistId = 9, year = 2016, genre = "Funk/Pop", artistName = "Bruno Mars"), db)
+        addAlbum(Album(title = "After Hours", artistId = 10, year = 2020, genre = "R&B/Pop", artistName = "The Weeknd"), db)
+        addAlbum(Album(title = "A Head Full of Dreams", artistId = 11, year = 2015, genre = "Pop Rock", artistName = "Coldplay"), db)
+        addAlbum(Album(title = "Chromatica", artistId = 12, year = 2020, genre = "Pop", artistName = "Lady Gaga"), db)
+        addAlbum(Album(title = "Evolve", artistId = 13, year = 2017, genre = "Pop Rock", artistName = "Imagine Dragons"), db)
+        addAlbum(Album(title = "Motomami", artistId = 14, year = 2022, genre = "Flamenco/Pop", artistName = "Rosalía"), db)
+        addAlbum(Album(title = "Mañana Será Bonito", artistId = 15, year = 2023, genre = "Reggaeton", artistName = "Karol G"), db)
+        addAlbum(Album(title = "Happier Than Ever", artistId = 16, year = 2021, genre = "Pop Alternativo", artistName = "Billie Eilish"), db)
+        addAlbum(Album(title = "Hollywood's Bleeding", artistId = 17, year = 2019, genre = "Pop/Rap", artistName = "Post Malone"), db)
+        addAlbum(Album(title = "Scorpion", artistId = 18, year = 2018, genre = "Hip-Hop/R&B", artistName = "Drake"), db)
+        addAlbum(Album(title = "Positions", artistId = 19, year = 2020, genre = "Pop/R&B", artistName = "Ariana Grande"), db)
+        addAlbum(Album(title = "Fine Line", artistId = 20, year = 2019, genre = "Pop/Rock", artistName = "Harry Styles"), db)
+        addAlbum(Album(title = "This Is Acting", artistId = 21, year = 2016, genre = "Pop", artistName = "Sia"), db)
+        addAlbum(Album(title = "Camila", artistId = 22, year = 2018, genre = "Pop/Latin", artistName = "Camila Cabello"), db)
+        addAlbum(Album(title = "Vida", artistId = 23, year = 2019, genre = "Latin Pop", artistName = "Luis Fonsi"), db)
+        addAlbum(Album(title = "Rare", artistId = 24, year = 2020, genre = "Pop", artistName = "Selena Gomez"), db)
+        addAlbum(Album(title = "Endless Summer Vacation", artistId = 25, year = 2023, genre = "Pop/Rock", artistName = "Miley Cyrus"), db)
+
     }
 
     /**
@@ -279,6 +300,27 @@ class DatabaseHelper(context: Context) :
         addArtist(Artista(name = "Michael Jackson", genre = "Pop/R&B", country = "EE.UU.", description = "Rey del Pop."), db)
         addArtist(Artista(name = "Bad Bunny", genre = "Reggaeton", country = "Puerto Rico", description = "Artista de reggaeton y trap."), db)
         addArtist(Artista(name = "Beyoncé", genre = "Pop/R&B", country = "EE.UU.", description = "Cantante, compositora y actriz."), db)
+        addArtist(Artista(name = "Adele", genre = "Pop/Soul", country = "Reino Unido", description = "Cantante y compositora británica ganadora de múltiples premios Grammy."), db)
+        addArtist(Artista(name = "Ed Sheeran", genre = "Pop", country = "Reino Unido", description = "Cantautor británico reconocido por sus letras románticas y acústicas."), db)
+        addArtist(Artista(name = "Taylor Swift", genre = "Pop/Country", country = "EE.UU.", description = "Cantautora estadounidense que mezcla pop, country y folk."), db)
+        addArtist(Artista(name = "Bruno Mars", genre = "Pop/Funk", country = "EE.UU.", description = "Cantante y productor con gran influencia del soul y el funk."), db)
+        addArtist(Artista(name = "The Weeknd", genre = "R&B/Pop", country = "Canadá", description = "Artista canadiense conocido por su estilo oscuro y melódico."), db)
+        addArtist(Artista(name = "Coldplay", genre = "Rock Alternativo", country = "Reino Unido", description = "Banda británica de rock alternativo con influencias pop."), db)
+        addArtist(Artista(name = "Lady Gaga", genre = "Pop", country = "EE.UU.", description = "Cantante y actriz reconocida por su estilo excéntrico e innovador."), db)
+        addArtist(Artista(name = "Imagine Dragons", genre = "Pop Rock", country = "EE.UU.", description = "Banda estadounidense con éxitos de rock alternativo y pop."), db)
+        addArtist(Artista(name = "Rosalía", genre = "Flamenco/Pop", country = "España", description = "Cantante española que fusiona flamenco con reggaetón y pop."), db)
+        addArtist(Artista(name = "Karol G", genre = "Reggaeton", country = "Colombia", description = "Cantante colombiana reconocida por sus éxitos urbanos y colaboraciones."), db)
+        addArtist(Artista(name = "Billie Eilish", genre = "Pop Alternativo", country = "EE.UU.", description = "Artista estadounidense con estilo experimental y melancólico."), db)
+        addArtist(Artista(name = "Post Malone", genre = "Hip-Hop/Pop", country = "EE.UU.", description = "Rapero y cantante con mezcla de hip-hop, pop y rock."), db)
+        addArtist(Artista(name = "Drake", genre = "Hip-Hop/R&B", country = "Canadá", description = "Rapero y cantante canadiense con influencia pop."), db)
+        addArtist(Artista(name = "Ariana Grande", genre = "Pop/R&B", country = "EE.UU.", description = "Cantante estadounidense con voz potente y múltiples éxitos globales."), db)
+        addArtist(Artista(name = "Harry Styles", genre = "Pop/Rock", country = "Reino Unido", description = "Ex integrante de One Direction, cantante y actor británico."), db)
+        addArtist(Artista(name = "Sia", genre = "Pop", country = "Australia", description = "Cantautora australiana reconocida por su potente voz y composiciones emotivas."), db)
+        addArtist(Artista(name = "Camila Cabello", genre = "Pop/Latin", country = "Cuba", description = "Cantante cubano-estadounidense, ex integrante de Fifth Harmony."), db)
+        addArtist(Artista(name = "Luis Fonsi", genre = "Latin Pop", country = "Puerto Rico", description = "Cantante puertorriqueño conocido por 'Despacito'."), db)
+        addArtist(Artista(name = "Selena Gomez", genre = "Pop", country = "EE.UU.", description = "Cantante y actriz con una mezcla de pop y dance."), db)
+        addArtist(Artista(name = "Miley Cyrus", genre = "Pop/Rock", country = "EE.UU.", description = "Cantante y actriz estadounidense con estilo versátil."), db)
+
     }
 
     /**
@@ -385,6 +427,51 @@ class DatabaseHelper(context: Context) :
         addCancion(Cancion(title = "Moscow Mule", albumId = 4, artistId = 4, genre = "Reggaeton", duration = 243, url = "https://youtu.be/p38WgakuYDo?list=RDp38WgakuYDo"), db)
         addCancion(Cancion(title = "Titi Me Preguntó", albumId = 4, artistId = 4, genre = "Reggaeton", duration = 243, url = "https://youtu.be/Cr8K88UcO0s?list=RDCr8K88UcO0s"), db)
         addCancion(Cancion(title = "Formation", albumId = 5, artistId = 5, genre = "R&B", duration = 217, url = "https://youtu.be/WDZJPJV__bQ?list=RDWDZJPJV__bQ"), db)
+        addCancion(Cancion(title = "Hello", albumId = 6, artistId = 6, genre = "Pop/Soul", duration = 295, url = "https://youtu.be/YQHsXMglC9A"), db)
+        addCancion(Cancion(title = "Send My Love", albumId = 6, artistId = 6, genre = "Pop", duration = 223, url = "https://youtu.be/fk4BbF7B29w"), db)
+
+        addCancion(Cancion(title = "Shape of You", albumId = 7, artistId = 7, genre = "Pop", duration = 234, url = "https://youtu.be/JGwWNGJdvx8"), db)
+        addCancion(Cancion(title = "Perfect", albumId = 7, artistId = 7, genre = "Pop", duration = 263, url = "https://youtu.be/2Vv-BfVoq4g"), db)
+
+        addCancion(Cancion(title = "Blank Space", albumId = 8, artistId = 8, genre = "Pop", duration = 231, url = "https://youtu.be/e-ORhEE9VVg"), db)
+        addCancion(Cancion(title = "Style", albumId = 8, artistId = 8, genre = "Pop", duration = 231, url = "https://youtu.be/-CmadmM5cOk"), db)
+
+        addCancion(Cancion(title = "24K Magic", albumId = 9, artistId = 9, genre = "Funk", duration = 227, url = "https://youtu.be/UqyT8IEBkvY"), db)
+        addCancion(Cancion(title = "That's What I Like", albumId = 9, artistId = 9, genre = "Pop", duration = 187, url = "https://youtu.be/PMivT7MJ41M"), db)
+
+        addCancion(Cancion(title = "Blinding Lights", albumId = 10, artistId = 10, genre = "Synth-Pop", duration = 200, url = "https://youtu.be/fHI8X4OXluQ"), db)
+        addCancion(Cancion(title = "Save Your Tears", albumId = 10, artistId = 10, genre = "R&B", duration = 215, url = "https://youtu.be/XXYlFuWEuKI"), db)
+
+        addCancion(Cancion(title = "Adventure of a Lifetime", albumId = 11, artistId = 11, genre = "Pop Rock", duration = 260, url = "https://youtu.be/QtXby3twMmI"), db)
+        addCancion(Cancion(title = "Hymn for the Weekend", albumId = 11, artistId = 11, genre = "Pop", duration = 258, url = "https://youtu.be/YykjpeuMNEk"), db)
+
+        addCancion(Cancion(title = "Rain On Me", albumId = 12, artistId = 12, genre = "Pop", duration = 182, url = "https://youtu.be/AoAm4om0wTs"), db)
+        addCancion(Cancion(title = "Stupid Love", albumId = 12, artistId = 12, genre = "Pop", duration = 193, url = "https://youtu.be/5L6xyaeiV58"), db)
+
+        addCancion(Cancion(title = "Believer", albumId = 13, artistId = 13, genre = "Rock", duration = 204, url = "https://youtu.be/7wtfhZwyrcc"), db)
+        addCancion(Cancion(title = "Thunder", albumId = 13, artistId = 13, genre = "Pop Rock", duration = 187, url = "https://youtu.be/fKopy74weus"), db)
+
+        addCancion(Cancion(title = "Despechá", albumId = 14, artistId = 14, genre = "Pop/Reggaeton", duration = 186, url = "https://youtu.be/RA3H3kK7b_M"), db)
+        addCancion(Cancion(title = "Saoko", albumId = 14, artistId = 14, genre = "Flamenco/Pop", duration = 164, url = "https://youtu.be/_9a5g-6r7VQ"), db)
+
+        addCancion(Cancion(title = "Provenza", albumId = 15, artistId = 15, genre = "Reggaeton", duration = 210, url = "https://youtu.be/4D9W8HBp3PQ"), db)
+        addCancion(Cancion(title = "TQG", albumId = 15, artistId = 15, genre = "Reggaeton", duration = 195, url = "https://youtu.be/jZGpkLElSu8"), db)
+
+        addCancion(Cancion(title = "Happier Than Ever", albumId = 16, artistId = 16, genre = "Pop Alternativo", duration = 298, url = "https://youtu.be/5GJWxDKyk3A"), db)
+        addCancion(Cancion(title = "Therefore I Am", albumId = 16, artistId = 16, genre = "Pop", duration = 174, url = "https://youtu.be/5GJWxDKyk3A"), db)
+
+        addCancion(Cancion(title = "Circles", albumId = 17, artistId = 17, genre = "Pop", duration = 215, url = "https://youtu.be/wXhTHyIgQ_U"), db)
+        addCancion(Cancion(title = "Wow.", albumId = 17, artistId = 17, genre = "Hip-Hop", duration = 150, url = "https://youtu.be/Dwzk-XZxZ4k"), db)
+
+        addCancion(Cancion(title = "God’s Plan", albumId = 18, artistId = 18, genre = "Hip-Hop", duration = 198, url = "https://youtu.be/xpVfcZ0ZcFM"), db)
+        addCancion(Cancion(title = "In My Feelings", albumId = 18, artistId = 18, genre = "Hip-Hop", duration = 218, url = "https://youtu.be/drS9a99gX_A"), db)
+
+        addCancion(Cancion(title = "Positions", albumId = 19, artistId = 19, genre = "Pop/R&B", duration = 172, url = "https://youtu.be/tcYodQoapMg"), db)
+        addCancion(Cancion(title = "34+35", albumId = 19, artistId = 19, genre = "Pop", duration = 211, url = "https://youtu.be/B6_iQvaIjXw"), db)
+
+        addCancion(Cancion(title = "Adore You", albumId = 20, artistId = 20, genre = "Pop", duration = 207, url = "https://youtu.be/VF-r5TtlT9w"), db)
+        addCancion(Cancion(title = "Watermelon Sugar", albumId = 20, artistId = 20, genre = "Pop/Rock", duration = 174, url = "https://youtu.be/E07s5ZYygMg"), db)
+
     }
 
     /**
