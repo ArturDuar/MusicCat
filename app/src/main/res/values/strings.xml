@@ -6,4 +6,5 @@
     <string name="album">Album</string>
     <string name="genero">Género</string>
     <string name="buscar">Buscar...</string>
+    <string name="pais">Pais</string>
 </resources>

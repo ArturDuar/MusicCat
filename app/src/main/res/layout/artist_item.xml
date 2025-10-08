@@ -5,53 +5,45 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:strokeColor="?attr/colorOutline"
-    app:strokeWidth="1dp">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Detalles del artista -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_artist_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Nombre del Artista"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_artist_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre del Artista"
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_artist_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Género: Pop"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
-            <TextView
-                android:id="@+id/tv_artist_genre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Género: Pop"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+        <TextView
+            android:id="@+id/tv_artist_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="País: Colombia"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
-            <TextView
-                android:id="@+id/tv_artist_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="País: Colombia"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+        <TextView
+            android:id="@+id/tv_artist_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descripción breve del artista..."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:layout_marginTop="4dp"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
-            <TextView
-                android:id="@+id/tv_artist_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Descripción breve del artista."
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:layout_marginTop="4dp" />
-        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

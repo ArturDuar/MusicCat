@@ -6,12 +6,13 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import edu.udb.investigaciondsm2.model.Album
+import edu.udb.investigaciondsm2.model.Artista
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "MusicCatDB"
 
         // Album Table Details
@@ -21,9 +22,18 @@ class DatabaseHelper(context: Context) :
         private const val KEY_ARTIST_ID = "artist_id" // Linking to an Artist table later
         private const val KEY_YEAR = "year"
         private const val KEY_GENRE = "genre"
+
+        // Artist Table Details
+        private const val TABLE_ARTISTS = "artists"
+        private const val KEY_ARTIST_TABLE_ID = "artist_id"
+        private const val KEY_ARTIST_NAME = "name"
+        private const val KEY_ARTIST_GENRE = "genre"
+        private const val KEY_ARTIST_COUNTRY = "country"
+        private const val KEY_ARTIST_DESCRIPTION = "description"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
+        // --- Creación de tabla de álbumes ---
         val CREATE_ALBUMS_TABLE = ("CREATE TABLE $TABLE_ALBUMS("
                 + "$KEY_ID INTEGER PRIMARY KEY,"
                 + "$KEY_TITLE TEXT,"
@@ -32,18 +42,33 @@ class DatabaseHelper(context: Context) :
                 + "$KEY_GENRE TEXT" + ")")
         db.execSQL(CREATE_ALBUMS_TABLE)
 
-        // Seed initial data for demonstration
-        seedData(db)
+        // --- Creación de tabla de artistas ---
+        val CREATE_ARTISTS_TABLE = ("CREATE TABLE $TABLE_ARTISTS("
+                + "$KEY_ARTIST_TABLE_ID INTEGER PRIMARY KEY,"
+                + "$KEY_ARTIST_NAME TEXT NOT NULL,"
+                + "$KEY_ARTIST_GENRE TEXT,"
+                + "$KEY_ARTIST_COUNTRY TEXT,"
+                + "$KEY_ARTIST_DESCRIPTION TEXT" + ")")
+        db.execSQL(CREATE_ARTISTS_TABLE)
+
+        // --- Datos iniciales ---
+        seedAlbumData(db)
+        seedArtistData(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Drop older table if existed
+        // Drop older tables if existed
         db.execSQL("DROP TABLE IF EXISTS $TABLE_ALBUMS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_ARTISTS")
         // Create tables again
         onCreate(db)
     }
 
-    // Helper function to insert data
+    // ===================================================================
+    // ==================== LÓGICA PARA ÁLBUMES (sin cambios) ============
+    // ===================================================================
+
+    // Helper function to insert an album
     private fun addAlbum(album: Album, db: SQLiteDatabase) {
         val values = ContentValues().apply {
             put(KEY_TITLE, album.title)
@@ -54,8 +79,8 @@ class DatabaseHelper(context: Context) :
         db.insert(TABLE_ALBUMS, null, values)
     }
 
-    // Seed data with some initial records
-    private fun seedData(db: SQLiteDatabase) {
+    // Seed data for albums
+    private fun seedAlbumData(db: SQLiteDatabase) {
         addAlbum(Album(title = "El Dorado", artistId = 1, year = 2017, genre = "Latin Pop", artistName = "Shakira"), db)
         addAlbum(Album(title = "Future Nostalgia", artistId = 2, year = 2020, genre = "Pop", artistName = "Dua Lipa"), db)
         addAlbum(Album(title = "Thriller", artistId = 3, year = 1982, genre = "Pop/R&B", artistName = "Michael Jackson"), db)
@@ -148,6 +173,108 @@ class DatabaseHelper(context: Context) :
         }
 
         val query = "SELECT DISTINCT $columnName FROM $TABLE_ALBUMS ORDER BY $columnName ASC"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                distinctList.add(cursor.getString(0))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return distinctList
+    }
+
+    // ===================================================================
+    // ==================== LÓGICA PARA ARTISTAS =========================
+    // ===================================================================
+
+    // Helper function to insert an artist
+    private fun addArtist(artist: Artista, db: SQLiteDatabase) {
+        val values = ContentValues().apply {
+            put(KEY_ARTIST_NAME, artist.name)
+            put(KEY_ARTIST_GENRE, artist.genre)
+            put(KEY_ARTIST_COUNTRY, artist.country)
+            put(KEY_ARTIST_DESCRIPTION, artist.description)
+        }
+        db.insert(TABLE_ARTISTS, null, values)
+    }
+
+    // Seed data for artists
+    private fun seedArtistData(db: SQLiteDatabase) {
+        addArtist(Artista(name = "Shakira", genre = "Latin Pop", country = "Colombia", description = "Cantante y compositora colombiana."), db)
+        addArtist(Artista(name = "Dua Lipa", genre = "Pop", country = "Reino Unido", description = "Cantante y compositora británica."), db)
+        addArtist(Artista(name = "Michael Jackson", genre = "Pop/R&B", country = "EE.UU.", description = "Rey del Pop."), db)
+        addArtist(Artista(name = "Bad Bunny", genre = "Reggaeton", country = "Puerto Rico", description = "Artista de reggaeton y trap."), db)
+        addArtist(Artista(name = "Beyoncé", genre = "Pop/R&B", country = "EE.UU.", description = "Cantante, compositora y actriz."), db)
+    }
+
+    /**
+     * Retrieves all artists or filters them based on a search term, genre, and country.
+     */
+    fun getAllArtists(searchTerm: String = "", genreFilter: String = "", countryFilter: String = ""): List<Artista> {
+        val artistList = ArrayList<Artista>()
+        val db = this.readableDatabase
+
+        var query = "SELECT * FROM $TABLE_ARTISTS"
+        val selectionArgs = mutableListOf<String>()
+        val conditions = mutableListOf<String>()
+
+        // 1. Keyword Search (Name or Description)
+        if (searchTerm.isNotBlank()) {
+            conditions.add("$KEY_ARTIST_NAME LIKE ? OR $KEY_ARTIST_DESCRIPTION LIKE ?")
+            selectionArgs.add("%$searchTerm%")
+            selectionArgs.add("%$searchTerm%")
+        }
+
+        // 2. Genre Filter
+        if (genreFilter.isNotBlank()) {
+            conditions.add("$KEY_ARTIST_GENRE = ?")
+            selectionArgs.add(genreFilter)
+        }
+
+        // 3. Country Filter
+        if (countryFilter.isNotBlank()) {
+            conditions.add("$KEY_ARTIST_COUNTRY = ?")
+            selectionArgs.add(countryFilter)
+        }
+
+        // Construct the WHERE clause
+        if (conditions.isNotEmpty()) {
+            query += " WHERE " + conditions.joinToString(" AND ")
+        }
+
+        // Execute Query
+        val cursor = db.rawQuery(query, selectionArgs.toTypedArray())
+
+        if (cursor.moveToFirst()) {
+            do {
+                val artist = Artista(
+                    artistaId = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ARTIST_TABLE_ID)), // ✅ Usamos la constante renombrada
+                    name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_ARTIST_NAME)),
+                    genre = cursor.getString(cursor.getColumnIndexOrThrow(KEY_ARTIST_GENRE)),
+                    country = cursor.getString(cursor.getColumnIndexOrThrow(KEY_ARTIST_COUNTRY)),
+                    description = cursor.getString(cursor.getColumnIndexOrThrow(KEY_ARTIST_DESCRIPTION))
+                )
+                artistList.add(artist)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return artistList
+    }
+
+    /**
+     * Gets a list of distinct values from a column for Artists (e.g., Genres or Countries)
+     */
+    fun getDistinctArtistValues(columnName: String): List<String> {
+        val distinctList = mutableListOf<String>()
+        val db = this.readableDatabase
+
+        // Define which columns are valid for this function
+        if (columnName != KEY_ARTIST_GENRE && columnName != KEY_ARTIST_COUNTRY) {
+            return distinctList // Return empty list if invalid column
+        }
+
+        val query = "SELECT DISTINCT $columnName FROM $TABLE_ARTISTS WHERE $columnName IS NOT NULL AND $columnName != '' ORDER BY $columnName ASC"
         val cursor = db.rawQuery(query, null)
 
         if (cursor.moveToFirst()) {
